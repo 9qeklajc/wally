@@ -11,6 +11,8 @@ pub enum Error {
     PluginInvoke(#[from] tauri::plugin::mobile::PluginInvokeError),
     #[error("Network error")]
     Network,
+    #[error(transparent)]
+    Anyhow(#[from] Box<dyn std::error::Error + Send + Sync>),
 }
 
 impl Serialize for Error {

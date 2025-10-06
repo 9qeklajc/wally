@@ -66,4 +66,28 @@ impl<R: Runtime> Androidwifi<R> {
             .run_mobile_plugin("markCaptivePortalDismissed", payload)
             .map_err(Into::into)
     }
+
+    pub fn detect_tollgate(&self, payload: Empty) -> crate::Result<TollgateDetectionResponse> {
+        self.0
+            .run_mobile_plugin("detectTollgate", payload)
+            .map_err(Into::into)
+    }
+
+    pub async fn get_network_status(&self, payload: Empty) -> crate::Result<NetworkStatusResponse> {
+        // For mobile, we'll call the plugin synchronously and convert to async
+        tokio::task::spawn_blocking({
+            let handle = self.0.clone();
+            move || {
+                handle
+                    .run_mobile_plugin("getNetworkStatus", payload)
+                    .map_err(Into::into)
+            }
+        })
+        .await
+        .unwrap_or_else(|_| {
+            Err(crate::Error::Anyhow(
+                "Failed to execute network status check".into(),
+            ))
+        })
+    }
 }
