@@ -54,6 +54,7 @@ bitcoin_hashes = { version = "0.13", features = ["std"], default-features = fals
 
 [target.'cfg(target_os = "android")'.dependencies]
 tauri-plugin-sharetarget = "0.1.6"
+openssl = { version = "0.10", features = ["vendored"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2" }

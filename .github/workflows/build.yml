@@ -165,11 +165,17 @@ jobs:
 
       - name: Build Android universal binary
         if: matrix.android
+        env:
+          OPENSSL_STATIC: 1
+          OPENSSL_VENDOR: 1
         run: |
           pnpm tauri android build
 
       - name: Build Android arch specific binaries
         if: matrix.android
+        env:
+          OPENSSL_STATIC: 1
+          OPENSSL_VENDOR: 1
         run: |
           pnpm tauri android build --apk --split-per-abi
 
